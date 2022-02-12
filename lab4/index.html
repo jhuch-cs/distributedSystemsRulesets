@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="/styles.css" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+  <title>Lab 4: SPA</title>
+</head>
+
+<body>
+  <h1>Current Sensor Data</h1>
+  <div id="app">
+    <p>Current Temperature: <span v-bind:class="{ violating: violatingTemps.includes(currentTemp) }">{{currentTemp}}</span></p>
+    <p>Recent Temperatures: </p>
+    <ul>
+      <li v-for="(temp, i) in recentTemps" :key="i">
+        <span v-bind:class="{ violating: violatingTemps.includes(temp) }">
+          {{temp}}
+        </span>
+      </li>
+    </ul>
+
+    <hr/>
+
+    <h1>Current Sensor Profile</h1>
+    <label>Location: </label>
+    <input v-model="updatedLocation" :placeholder="sensorProfile.location"/>
+    <br/>
+
+    <label>Name: </label>
+    <input v-model="updatedName" :placeholder="sensorProfile.name" />
+    <br/>
+
+    <label>Threshold: </label>
+    <input v-model="updatedThreshold" :placeholder="sensorProfile.threshold"/>
+    <br/>
+
+    <label>Phone Number: </label>
+    <input v-model="updatedPhoneNumber" :placeholder="sensorProfile.phone_number" />
+    <br/>
+
+    <button  v-on:click="updateProfile">Update Profile</button>
+  </div>
+
+ 
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="/script.js"></script>
+</body>
+
+</html>
