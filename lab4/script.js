@@ -46,31 +46,31 @@ let app = new Vue({
     },
     updateProfile() {
       console.log("in update profile");
-      let updateProfileUrl = "http://localhost:3000/c/ckyugkt53005pgwvode6t1egr/event-wait/sensor/profile_updated?"
+      let updateProfileUrl = new URL("http://localhost:3000/c/ckyugkt53005pgwvode6t1egr/event-wait/sensor/profile_updated?");
       if (this.updatedLocation) {
-        updateProfileUrl += `location=${this.updatedLocation}&`;
+        updateProfileUrl.searchParams.set("location", this.updatedLocation);
         this.sensorProfile.location = this.updatedLocation;
         this.updatedLocation = '';
       }
       if (this.updatedName) {
-        updateProfileUrl += `name=${this.updatedName}&`
+        updateProfileUrl.searchParams.set("name", this.updatedName);
         this.sensorProfile.name = this.updatedName;
         this.updatedName = '';
       }
       if (this.updatedThreshold) {
-        updateProfileUrl += `threshold=${this.updatedThreshold}&`
+        updateProfileUrl.searchParams.set("threshold", this.updatedThreshold);
         this.sensorProfile.threshold = this.updatedThreshold;
         this.updatedThreshold = '';
       }
       if (this.updatedPhoneNumber) {
-        updateProfileUrl += `phone_number=${this.updatedPhoneNumber}`
+        updateProfileUrl.searchParams.set("phone_number", this.updatedPhoneNumber);
         this.sensorProfile.phone_number = this.updatedPhoneNumber;
         this.updatedPhoneNumber = '';
       }
 
-      console.log(updateProfileUrl)
+      console.log(updateProfileUrl.toString())
 
-      axios.get(updateProfileUrl)
+      axios.get(updateProfileUrl.toString())
         .then(_ => {
           this.fetchData();
         })
