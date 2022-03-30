@@ -64,7 +64,8 @@ ruleset manage_sensors {
             "file:///C:/Users/jared/Documents/College/cs462/lab8/io.picolabs.wovyn.emitter.krl",
             "file:///C:/Users/jared/Documents/College/cs462/lab8/sensor_profile.krl",
             "file:///C:/Users/jared/Documents/College/cs462/lab8/wovyn_base.krl",
-            "file:///C:/Users/jared/Documents/College/cs462/lab8/temperature_store.krl"
+            "file:///C:/Users/jared/Documents/College/cs462/lab8/temperature_store.krl",
+            "file:///C:/Users/jared/Documents/College/cs462/lab8/gossip_protocol.krl"
         ]
         defaultThreshold = 73
         royal_blue = "#3757bf"
@@ -276,5 +277,28 @@ ruleset manage_sensors {
             raise sensor event "unneeded_sensor"
                 attributes {"name": name}
         }
+    }
+
+    rule reset_all_gossip {
+        select when gossip reset_all foreach tempSensors() setting(sensor)
+
+        pre {
+            period = event:attrs{"period"} || null
+            tx = sensor{"Tx"}
+            host = sensor{"Tx_host"} || meta:host
+        }
+
+        event:send(
+            { "eci": tx,
+              "eid": "gossip-reset",
+              "domain": "gossip",
+              "type": "reset",
+              "attrs": {
+                "period": period
+              }
+            },
+            host=host
+        )
+
     }
 }
